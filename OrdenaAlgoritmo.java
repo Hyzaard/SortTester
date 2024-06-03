@@ -20,4 +20,122 @@ public class OrdenaAlgoritmo {
         metrica.setTempo(tempoFinal - tempoInicio);
     }
 
+        public static void selectionSort(int[] vetor, MetricaDeOrdenacao metrica) {
+        double tempoInicio = System.currentTimeMillis();
+
+        for (int i = 0; i < vetor.length - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < vetor.length; j++) {
+                metrica.addComparacoes();
+                if (vetor[j] < vetor[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            int temp = vetor[minIndex];
+            vetor[minIndex] = vetor[i];
+            vetor[i] = temp;
+            metrica.addTroca();
+        }
+
+        double tempoFinal = System.currentTimeMillis();
+        metrica.setTempo(tempoFinal - tempoInicio);
+    }
+
+    public static void insertionSort(int[] vetor, MetricaDeOrdenacao metrica) {
+        double tempoInicio = System.currentTimeMillis();
+
+        for (int i = 1; i < vetor.length; i++) {
+            int key = vetor[i];
+            int j = i - 1;
+            while (j >= 0 && vetor[j] > key) {
+                metrica.addComparacoes();
+                vetor[j + 1] = vetor[j];
+                j = j - 1;
+                metrica.addTroca();
+            }
+            vetor[j + 1] = key;
+        }
+
+        double tempoFinal = System.currentTimeMillis();
+        metrica.setTempo(tempoFinal - tempoInicio);
+    }
+
+    public static void quickSort(int[] vetor, MetricaDeOrdenacao metrica) {
+        double tempoInicio = System.currentTimeMillis();
+        double tempoFinal = System.currentTimeMillis();
+        metrica.setTempo(tempoFinal - tempoInicio);
+    }
+
+
+    private static int partition(int[] vetor, int low, int high, MetricaDeOrdenacao metrica) {
+        int pivot = vetor[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            metrica.addComparacoes();
+            if (vetor[j] <= pivot) {
+                i++;
+                int temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+                metrica.addTroca();
+            }
+        }
+        int temp = vetor[i + 1];
+        vetor[i + 1] = vetor[high];
+        vetor[high] = temp;
+        metrica.addTroca();
+        return i + 1;
+    }
+
+    public static void mergeSort(int[] vetor, MetricaDeOrdenacao metrica) {
+        double tempoInicio = System.currentTimeMillis();
+        double tempoFinal = System.currentTimeMillis();
+        metrica.setTempo(tempoFinal - tempoInicio);
+    }
+
+
+    private static void merge(int[] vetor, int left, int mid, int right, MetricaDeOrdenacao metrica) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; ++i) {
+            L[i] = vetor[left + i];
+        }
+        for (int j = 0; j < n2; ++j) {
+            R[j] = vetor[mid + 1 + j];
+        }
+
+        int i = 0, j = 0;
+        int k = left;
+        while (i < n1 && j < n2) {
+            metrica.addComparacoes();
+            if (L[i] <= R[j]) {
+                vetor[k] = L[i];
+                i++;
+            } else {
+                vetor[k] = R[j];
+                j++;
+            }
+            metrica.addTroca();
+            k++;
+        }
+
+        while (i < n1) {
+            vetor[k] = L[i];
+            i++;
+            k++;
+            metrica.addTroca();
+        }
+
+        while (j < n2) {
+            vetor[k] = R[j];
+            j++;
+            k++;
+            metrica.addTroca();
+        }
+    }
+
 }
