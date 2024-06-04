@@ -20,7 +20,8 @@ public class OrdenaAlgoritmo {
         metrica.setTempo(tempoFinal - tempoInicio);
     }
 
-        public static void selectionSort(int[] vetor, MetricaDeOrdenacao metrica) {
+    public static void selectionSort(int[] vetor, MetricaDeOrdenacao metrica) {
+
         double tempoInicio = System.currentTimeMillis();
 
         for (int i = 0; i < vetor.length - 1; i++) {
@@ -42,6 +43,7 @@ public class OrdenaAlgoritmo {
     }
 
     public static void insertionSort(int[] vetor, MetricaDeOrdenacao metrica) {
+
         double tempoInicio = System.currentTimeMillis();
 
         for (int i = 1; i < vetor.length; i++) {
@@ -61,40 +63,77 @@ public class OrdenaAlgoritmo {
     }
 
     public static void quickSort(int[] vetor, MetricaDeOrdenacao metrica) {
+
         double tempoInicio = System.currentTimeMillis();
+        quickSortRecursive(vetor, 0, vetor.length - 1, metrica);
         double tempoFinal = System.currentTimeMillis();
         metrica.setTempo(tempoFinal - tempoInicio);
     }
 
+    private static void quickSortRecursive(int[] vetor, int low, int high, MetricaDeOrdenacao metrica) {
+
+        if (low < high) {
+            int pi = partition(vetor, low, high, metrica);
+            quickSortRecursive(vetor, low, pi - 1, metrica);
+            quickSortRecursive(vetor, pi + 1, high, metrica);
+        }
+    }
 
     private static int partition(int[] vetor, int low, int high, MetricaDeOrdenacao metrica) {
+
+        int pivotIndex = medianOfThree(vetor, low, high);
+        swap(vetor, pivotIndex, high);
         int pivot = vetor[high];
         int i = (low - 1);
         for (int j = low; j < high; j++) {
             metrica.addComparacoes();
             if (vetor[j] <= pivot) {
                 i++;
-                int temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
+                swap(vetor, i, j);
                 metrica.addTroca();
             }
         }
-        int temp = vetor[i + 1];
-        vetor[i + 1] = vetor[high];
-        vetor[high] = temp;
+        swap(vetor, i + 1, high);
         metrica.addTroca();
         return i + 1;
     }
 
+    private static int medianOfThree(int[] vetor, int low, int high) {
+
+        int mid = low + (high - low) / 2;
+        if (vetor[low] > vetor[mid]) swap(vetor, low, mid);
+        if (vetor[low] > vetor[high]) swap(vetor, low, high);
+        if (vetor[mid] > vetor[high]) swap(vetor, mid, high);
+        return mid;
+    }
+
+    private static void swap(int[] vetor, int i, int j) {
+
+        int temp = vetor[i];
+        vetor[i] = vetor[j];
+        vetor[j] = temp;
+    }
+
     public static void mergeSort(int[] vetor, MetricaDeOrdenacao metrica) {
+
         double tempoInicio = System.currentTimeMillis();
+        mergeSortRecursive(vetor, 0, vetor.length - 1, metrica);
         double tempoFinal = System.currentTimeMillis();
         metrica.setTempo(tempoFinal - tempoInicio);
     }
 
+    private static void mergeSortRecursive(int[] vetor, int left, int right, MetricaDeOrdenacao metrica) {
+
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSortRecursive(vetor, left, mid, metrica);
+            mergeSortRecursive(vetor, mid + 1, right, metrica);
+            merge(vetor, left, mid, right, metrica);
+        }
+    }
 
     private static void merge(int[] vetor, int left, int mid, int right, MetricaDeOrdenacao metrica) {
+
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
@@ -137,5 +176,4 @@ public class OrdenaAlgoritmo {
             metrica.addTroca();
         }
     }
-
 }
